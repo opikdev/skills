@@ -1,0 +1,30 @@
+- id: GIT-001
+  severity: error
+  rule: 'Commit subjects use "type(scope): description", in lowercase, within 72 characters'
+  why: Readable history and generated release notes depend on one format
+  applies: { type: any }
+  verify: { tool: check-commit-msg }
+- id: GIT-002
+  severity: error
+  rule: Commits have no body or trailers
+  why: The owner wants subject-only commits, and harnesses add attribution by default
+  applies: { type: any }
+  verify: { tool: check-commit-msg }
+- id: GIT-003
+  severity: error
+  rule: Files are staged by name, never with a bare git add . or -A
+  why: Sessions kept doing this after loading the git skill, so prose was not enough
+  applies: { type: any }
+  verify: { tool: guard-git }
+- id: GIT-004
+  severity: error
+  rule: Git hooks are never skipped
+  why: A skipped hook hides the failure it exists to catch
+  applies: { type: any }
+  verify: { tool: guard-git }
+- id: SEC-001
+  severity: error
+  rule: No secrets in staged changes or git history
+  why: A committed secret counts as leaked and must be rotated
+  applies: { type: any }
+  verify: { tool: gitleaks }
