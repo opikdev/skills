@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { validateRules, validateSkill } from './validate.mjs';
+import { validateRuleReferences, validateRules, validateSkill } from './validate.mjs';
 
 const rule = {
   id: 'WEB-PERF-002',
@@ -35,6 +35,24 @@ test('rejects duplicate ids, missing fields, and unknown severities', () => {
   assert.deepEqual(validateRules([rule, rule]), ['WEB-PERF-002: duplicate id']);
   assert.deepEqual(validateRules([{ ...rule, why: undefined }]), ['WEB-PERF-002: missing why']);
   assert.match(validateRules([{ ...rule, severity: 'block' }])[0], /unknown severity "block"/);
+});
+
+test('accepts checks that use registered rule ids', () => {
+  const files = [{ path: 'check.mjs', text: "id: 'WEB-PERF-002', again WEB-PERF-002" }];
+  assert.deepEqual(validateRuleReferences(files, [rule]), []);
+});
+
+test('rejects a check that uses an unregistered rule id', () => {
+  const files = [{ path: 'check.mjs', text: "id: 'WEB-SEC-009'" }];
+  assert.deepEqual(validateRuleReferences(files, [rule]), [
+    'check.mjs: WEB-SEC-009 is not in rules/',
+  ]);
+});
+
+test('does not read a rule id inside a longer id', () => {
+  const known = [{ ...rule, id: 'WEB-SEC-001' }];
+  const files = [{ path: 'check.mjs', text: 'WEB-SEC-001' }];
+  assert.deepEqual(validateRuleReferences(files, known), []);
 });
 
 test('accepts a valid skill', () => {

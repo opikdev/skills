@@ -5,6 +5,7 @@ import { parse } from 'yaml';
 const severities = new Set(['error', 'warn']);
 const requiredFields = ['id', 'severity', 'rule', 'why', 'applies'];
 const maxDescription = 1024;
+const ruleIdPattern = /(?<![A-Z-])(?:GIT|SEC|CODE|CI|WEB-[A-Z0-9]+)-\d{3}\b/g;
 
 export function validateRules(rules) {
   const problems = [];
@@ -24,6 +25,15 @@ export function validateRules(rules) {
     }
   }
   return problems;
+}
+
+export function validateRuleReferences(files, rules) {
+  const known = new Set(rules.map((rule) => rule.id));
+  return files.flatMap(({ path, text }) =>
+    [...new Set(text.match(ruleIdPattern) ?? [])]
+      .filter((id) => !known.has(id))
+      .map((id) => `${path}: ${id} is not in rules/`),
+  );
 }
 
 export function validateSkill(directory, text, fileExists) {
@@ -47,8 +57,13 @@ if (import.meta.main) {
     parse(readFileSync(join('rules', file), 'utf8')),
   );
   const skills = readdirSync('skills');
+  const checks = readdirSync('checks', { recursive: true, withFileTypes: true })
+    .filter((entry) => entry.isFile() && !entry.name.endsWith('.test.mjs'))
+    .map((entry) => join(entry.parentPath, entry.name))
+    .map((path) => ({ path, text: readFileSync(path, 'utf8') }));
   const problems = [
     ...validateRules(rules),
+    ...validateRuleReferences(checks, rules),
     ...skills.flatMap((directory) =>
       validateSkill(directory, readFileSync(join('skills', directory, 'SKILL.md'), 'utf8'), (target) =>
         existsSync(join('skills', directory, target)),
