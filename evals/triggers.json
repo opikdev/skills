@@ -1,0 +1,750 @@
+[
+  {
+    "prompt": "the retry helper in src/lib/fetch.ts swallows the last error and returns undefined, can you fix it so callers actually see the failure",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "Refactor parseInvoice in billing/parser.py, it's 180 lines and nobody wants to touch it",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "write unit tests for the debounce function in utils/timing.js",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "getting `TypeError: cannot unpack non-iterable NoneType object` in scripts/sync_orders.py line 42 when the feed is empty",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "add a --dry-run flag to our deploy.sh script",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "port this bash cleanup script to python so it works on windows",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "the go worker leaks goroutines when the context is cancelled, track it down",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "implement an LRU cache in rust with get and put, O(1)",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "flaky test in tests/test_scheduler.py fails about 1 in 10 runs on CI. find out why",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "rename the UserManager class to AccountService everywhere in src/",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "can you make this function faster? it's the sort in lib/rank.rb, takes 4s on 50k rows",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "write a small node script that reads orders.csv and prints the total per customer",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "tolong perbaiki bug di src/cart.ts, total harga salah kalau ada diskon",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "remove the dead feature flag code for new_checkout, it shipped months ago",
+    "must": [
+      "coding"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "add a POST /orders endpoint to our express app, it should create an order and return it",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "design the postgres schema for a multi-tenant subscription billing system",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding",
+      "docs"
+    ]
+  },
+  {
+    "prompt": "write a migration that adds a NOT NULL status column to the payments table, it has 40 million rows",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "our GET /users list endpoint returns everything at once and is timing out. fix it",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "this query takes 9 seconds, can you add the right index: SELECT * FROM events WHERE account_id = ? ORDER BY created_at DESC LIMIT 50",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "rename the column user_name to username in production without downtime",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "write the OpenAPI spec for our invoices resource",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding",
+      "docs"
+    ]
+  },
+  {
+    "prompt": "what error format should my fastapi service return for validation failures? set it up",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "we're moving the public API from /v1 to a new response shape, how do we do this without breaking clients",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "add idempotency to the payment capture route so retries don't double charge",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "prisma schema for products and variants, money fields included",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "the ORM is firing 200 queries to render the orders page, sort it out",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "delete all rows from sessions older than 90 days on the production mysql database",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "add rate limiting to the login and password reset routes",
+    "must": [
+      "backend"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "build a pricing page for our saas with three tiers in react and tailwind",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "design a settings screen for a mobile banking app",
+    "must": [
+      "ui"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "the dashboard looks generic and AI-made, give it a real visual identity",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "write the empty state and error messages for our file upload component",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "create a landing page for a coffee subscription, single html file",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "our signup button says Submit and the error says Something went wrong. rewrite the copy in the signup flow",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "fix the color contrast and keyboard focus on the nav bar",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "make this table responsive and add loading and empty states",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "add dark mode to the app using design tokens",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "our marketing site scores 42 on lighthouse and doesn't rank, it's a client rendered react app. what should change",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "draft the welcome email and onboarding checklist copy for new users",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "docs"
+    ]
+  },
+  {
+    "prompt": "set up title tags, canonical urls and structured data for the blog pages",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "mock up a checkout flow in figma",
+    "must": [
+      "ui"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "create a modal component for confirming project deletion",
+    "must": [
+      "ui"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "write a README for this repo",
+    "must": [
+      "docs"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "update the docs, the CLI flag --tsv got renamed to --tabs last week",
+    "must": [
+      "docs"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "we picked postgres over mongo after a long debate, write that down as a decision record",
+    "must": [
+      "docs"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "create an AGENTS.md for this project",
+    "must": [
+      "docs"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "add a CHANGELOG entry for the 2.3 release",
+    "must": [
+      "docs"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "write a how-to for setting up webhooks in docs/",
+    "must": [
+      "docs"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "our README is 4000 words and nobody reads it. clean it up",
+    "must": [
+      "docs"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "document the config options for the retry middleware",
+    "must": [
+      "docs"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "write a getting started tutorial for new contributors",
+    "must": [
+      "docs"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "CLAUDE.md has grown huge, trim it down to what matters",
+    "must": [
+      "docs"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "the architecture doc still describes the old monolith, bring it up to date with the current services",
+    "must": [
+      "docs"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "commit my changes",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "commit this and push",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "open a PR for this branch",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "write a commit message for what's staged",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "squash the last three commits into one",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "create a branch for ticket 412, the user profile work",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "amend the last commit, I forgot a file",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "write the PR title and description for this work",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "merge main into my branch and resolve the conflicts",
+    "must": [
+      "git"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "i committed .env by accident, get it out of history",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "force push my rebased branch",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "fix the null check in auth.ts then commit it",
+    "must": [
+      "coding",
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "split my working tree changes into separate atomic commits",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "revert the bad deploy commit on main",
+    "must": [
+      "git"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "review this PR",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "can you check this diff for bugs before I merge",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "is this code good? src/payments/refund.ts",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "do a security audit of the auth module",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "coding",
+      "backend"
+    ]
+  },
+  {
+    "prompt": "any issues with this migration file?",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "backend"
+    ]
+  },
+  {
+    "prompt": "look over this landing page copy and tell me what's weak",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "ui"
+    ]
+  },
+  {
+    "prompt": "review the design of the onboarding screens",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "ui"
+    ]
+  },
+  {
+    "prompt": "here's my README, is it any good?",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "docs"
+    ]
+  },
+  {
+    "prompt": "sanity check this skill I wrote",
+    "must": [
+      "review"
+    ],
+    "may": []
+  },
+  {
+    "prompt": "give me feedback on my API design doc",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "backend",
+      "docs"
+    ]
+  },
+  {
+    "prompt": "what's wrong with this function? it looks fine to me but I want a second opinion",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "audit the repo for quality problems, rank what matters",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "coding"
+    ]
+  },
+  {
+    "prompt": "code review my last commit",
+    "must": [
+      "review"
+    ],
+    "may": [
+      "coding",
+      "git"
+    ]
+  },
+  {
+    "prompt": "what's the difference between a mutex and a semaphore?",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "explain how git rebase works, I keep getting confused",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "what does HTTP 429 mean?",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "compare REST and gRPC for me at a high level",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "what is WCAG and who has to follow it?",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "how does a B-tree index work",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "write a limerick about kubernetes",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "summarize the plot of Dune in three sentences",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "draft an email to my landlord about the broken heater",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "what's 18% of 2400?",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "recommend three books on distributed systems",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "translate 'where is the train station' into japanese",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "what time is it in jakarta if it's 3pm in london",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "plan a 3 day trip to kyoto",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "what's the capital of australia",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "explain what a closure is in javascript",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "is rust harder to learn than go?",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "what's the difference between margin and padding?",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "give me interview questions for a senior backend engineer",
+    "must": [],
+    "may": []
+  },
+  {
+    "prompt": "write a short speech for my sister's wedding",
+    "must": [],
+    "may": []
+  }
+]

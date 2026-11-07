@@ -5,7 +5,8 @@
   "scripts": {
     "test": "node --test \"scripts/*.test.mjs\"",
     "validate": "node scripts/validate.mjs",
-    "verify": "pnpm test && pnpm validate"
+    "verify": "pnpm test && pnpm validate",
+    "eval:triggers": "node scripts/trigger-eval.mjs"
   },
   "packageManager": "pnpm@12.15.0",
   "devDependencies": {
