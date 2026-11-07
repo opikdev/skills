@@ -1,6 +1,7 @@
 ---
 name: "opik-review-standards"
 description: "Review standards for evidence-based, severity-ranked, capped reviews with an explicit verdict. Use for EVERY review task — a PR, diff, commit, file, design, document, copy, or skill; audits for bugs, security, or quality; or \"check this\", \"review this\", \"any issues?\", \"is this good?\". If work is being evaluated rather than created, apply this skill."
+license: "MIT"
 ---
 
 # Review Standards
@@ -10,7 +11,7 @@ Targets taste-based nitpicking, unranked finding dumps, speculative issues, logi
 ## 1. Judge against the right bar
 
 - First, requirement fidelity: does the work do what was asked — fully, correctly, without unrequested scope?
-- "Good" means the opik standards, not personal taste. Load the matching skill before reviewing: coding, git, docs, backend, or ui.
+- "Good" means the installed standards, not personal taste. Load the matching skill before reviewing, if installed: coding, git, docs, backend, or ui.
 - Project conventions that differ from the standards win; don't flag project-consistent work.
 
 ## 2. Severity

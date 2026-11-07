@@ -1,6 +1,7 @@
 ---
 name: "opik-coding-standards"
 description: "Coding standards for simple, surgical, tested, comment-free code. Use for EVERY coding task — writing, editing, refactoring, debugging, or testing code — in any language, even if standards aren't mentioned. Pair with opik-backend-standards for APIs/databases and opik-ui-standards for UI."
+license: "MIT"
 ---
 
 # Coding Standards
@@ -53,7 +54,7 @@ Targets the failure modes that matter: over-engineering, scope creep, comment no
 - Cover unhappy paths: invalid input, empty, boundaries, errors.
 - Never weaken a test to pass (skip, loosen, delete assertions). A failure means find out whether the code or the test is wrong; if unclear, tell the user.
 - No coverage filler: getters, constants, framework internals.
-- Test at the lowest level that covers the risk, with the project's existing framework.
+- Bug fixes and new behavior get a test. Test at the lowest level that covers the risk, with the project's existing framework.
 
 ## 7. Root causes, not symptoms
 

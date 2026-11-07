@@ -1,6 +1,7 @@
 ---
 name: "opik-ui-standards"
 description: "UI standards for visual design, product copy, and public web pages — design brief, anti-\"AI slop\" bans, token system, accessibility floor, microcopy and error-message rules, and rendering/SEO for pages that must rank. Use for EVERY task that designs, builds, styles, writes copy for, or reviews a screen, component, mockup, dashboard, landing page, website, or product email — in Figma, Pencil, Paper, or UI code."
+license: "MIT"
 ---
 
 # UI Standards

@@ -15,14 +15,14 @@ Field targets (Google's "good" thresholds at p75 of real users): **LCP ≤ 2.5s,
 ## Technical SEO
 
 - Semantic HTML document: one `<h1>`, landmark elements, valid lang attribute.
-- Every indexable page: unique `<title>` (~50–60 chars), meta description (~150–160), self-referencing canonical URL. Canonicals must not change after JS render.
+- Every indexable page: unique, concise `<title>` and meta description with the key words first (Google sets no length limit and truncates by device width), self-referencing canonical URL. Canonicals must not change after JS render.
 - `robots.txt` (small, deliberate — never blocking CSS/JS) + XML sitemap submitted, containing only canonical, indexable, 200-status URLs.
-- Structured data as JSON-LD in the initial HTML for applicable types (Article, Product, FAQPage, BreadcrumbList, Organization) — validated, matching visible content, never fabricated.
+- Structured data as JSON-LD in the initial HTML for applicable types (Article, Product, BreadcrumbList, Organization) — validated, matching visible content, never fabricated.
 - Clean URL design: lowercase, hyphens, meaningful paths, no session/tracking params in canonical URLs. One URL per piece of content; duplicates canonicalized.
 - Redirects: 301 for permanent moves, no chains; fix broken internal links.
 - Open Graph + Twitter card tags on shareable pages, with a real og:image.
 - Internal linking: descriptive anchor text, no orphan pages, breadcrumbs on deep hierarchies.
-- Multi-language sites: correct hreflang pairs.
+- Multi-language sites: every version lists itself and all other versions in hreflang.
 
 ## On-page SEO
 
@@ -53,7 +53,7 @@ Extends the accessibility floor in SKILL.md with implementation rules:
 - Custom 404 page (with navigation back) served with a real 404 status; error pages that don't dead-end.
 - Favicon + web manifest basics; correct charset and viewport in `<head>`.
 - Progressive enhancement mindset: core content readable if JS fails; forms that can degrade gracefully where feasible.
-- External links that open new tabs: `rel="noopener"`.
+- `target="_blank"` already implies `noopener`; never add `rel="opener"` to external links.
 - Don't break the platform: working back button, real links (`<a href>`) for navigation (not div-onclick), scroll restoration, shareable URLs for meaningful states.
 
 ## GEO

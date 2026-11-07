@@ -1,6 +1,7 @@
 ---
 name: "opik-docs-standards"
 description: "Documentation conventions — minimal, scannable docs in docs/ with the root README, AGENTS.md, and CLAUDE.md as a map; one Diátaxis type per page; ADRs; zero drift. Use for EVERY task that writes or updates a README, AGENTS.md, CLAUDE.md, docs/ file, ADR, changelog, guide, or API docs — and whenever a code change makes an existing doc wrong."
+license: "MIT"
 ---
 
 # Docs Standards

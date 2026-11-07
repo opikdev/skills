@@ -1,6 +1,7 @@
 ---
 name: "opik-backend-standards"
 description: "Backend conventions for HTTP APIs and relational databases — RFC 9457 errors, versioning, pagination, idempotency, ID/casing/time/money conventions, schema rules, and production-safe migrations. Use for EVERY task that creates, changes, or reviews API endpoints, routes, handlers, OpenAPI specs, schemas, migrations, indexes, or SQL/ORM queries, in any framework or relational database."
+license: "MIT"
 ---
 
 # Backend Standards
@@ -18,7 +19,7 @@ Team conventions and the mistakes that reach production. REST and SQL fundamenta
 
 - Path versioning `/v1` from day one, internal APIs included.
 - Breaking (removing/renaming a field, changing a type or meaning, tightening validation, changing an error `type`) → new version. Deprecate with `Deprecation` + `Sunset` headers and a migration path.
-- OpenAPI 3.1 is the source of truth, updated in the same change as the endpoint. Each endpoint lists schemas, error `type`s, auth, and one example.
+- OpenAPI 3.1+ is the source of truth, updated in the same change as the endpoint. Each endpoint lists schemas, error `type`s, auth, and one example.
 - Action endpoints only when an action isn't a state change: `POST /payment-intents/{id}/cancel`.
 
 ### Collections
@@ -53,7 +54,7 @@ Team conventions and the mistakes that reach production. REST and SQL fundamenta
 - Every table: a generated opaque primary key, and `created_at` + `updated_at` NOT NULL with defaults, as UTC timestamp types.
 - Integrity lives in the database: NOT NULL, UNIQUE, CHECK, and declared foreign keys with a deliberately chosen `ON DELETE`.
 - Money as integer minor units or decimal; closed value sets as enum or CHECK.
-- Soft delete (`deleted_at`) where history matters, with a partial index on live rows.
+- Soft delete (`deleted_at`) where history matters, with a partial index on live rows where the engine supports it (MySQL doesn't; put `deleted_at` in a composite index).
 - Denormalize only after EXPLAIN shows a measured bottleneck.
 - Index from real query patterns; each index migration names the query it serves. No extra index on a column that's already unique.
 
@@ -69,9 +70,9 @@ For tables with real data. Read the SQL your ORM generates — a harmless-lookin
 
 | Need | PostgreSQL | MySQL 8 |
 |---|---|---|
-| Add column | Nullable or constant default is fast (11+) | `ALGORITHM=INSTANT` (8.0.12+) |
+| Add column | Nullable or non-volatile default skips the rewrite (11+); still takes a brief `ACCESS EXCLUSIVE` lock | `ALGORITHM=INSTANT` (any position from 8.0.30; not on `COMPRESSED` tables or tables with a `FULLTEXT` index) |
 | Add index | `CREATE INDEX CONCURRENTLY`, outside a transaction | `ALGORITHM=INPLACE, LOCK=NONE` |
-| Add FK or CHECK | `NOT VALID`, then `VALIDATE CONSTRAINT` separately | Online schema-change tool (gh-ost, pt-online-schema-change) on large tables |
+| Add FK or CHECK | `NOT VALID`, then `VALIDATE CONSTRAINT` separately | Online schema-change tool on large tables; gh-ost doesn't support foreign keys, so dry-run pt-online-schema-change first |
 
 - Other engines: read the engine's online-DDL docs before running against real data.
 - Backfill in batches; keep separate DDL steps in separate transactions so locks release.

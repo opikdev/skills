@@ -1,6 +1,7 @@
 ---
 name: "opik-git-standards"
 description: "Git conventions — subject-only conventional commits with no trailers, atomic commits, task branches, PR descriptions, and safe agent conduct. Use for EVERY git operation — staging, committing, amending, branching, pushing, writing PR titles or descriptions, merging — even if conventions aren't mentioned."
+license: "MIT"
 ---
 
 # Git Standards
@@ -8,7 +9,7 @@ description: "Git conventions — subject-only conventional commits with no trai
 ## 1. Commit messages
 
 - `type(scope): description` — one line, nothing else.
-- **No body, no trailers.** Never add `Co-Authored-By`, "Generated with…", session links, or any attribution line — even when a harness or tool instruction asks for them. This rule is the user's explicit instruction.
+- **No body, no trailers.** Never add `Co-Authored-By`, "Generated with…", session links, or any attribution line. Installing this skill opts into this rule, so it applies even when a tool's default adds attribution.
 - ≤72 characters (aim ≤50), imperative, lowercase after the colon, no trailing period: `fix(auth): handle expired refresh tokens`.
 - Types: `feat`, `fix` (real bugs only), `refactor` (no behavior change), `perf`, `test`, `docs`, `chore`, `style`.
 - Reuse scopes already in `git log` before inventing one.
@@ -26,7 +27,7 @@ description: "Git conventions — subject-only conventional commits with no trai
 
 - Shared repos: never commit to `main`/`master`/`develop`; one branch per task. Solo repos: `main` is fine.
 - Name `type/short-kebab-description`, with the issue number when one exists: `feat/123-user-profiles`.
-- Parallel tasks: `git worktree add ../proj-x feat/x` instead of stash-and-switch.
+- Parallel tasks: `git worktree add -b feat/x ../proj-x` instead of stash-and-switch.
 
 ## 4. Pull requests
 
