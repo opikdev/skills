@@ -21,7 +21,7 @@ These steps fit a static Astro site that uses pnpm. Use `checks/astro-static`.
      "check": "astro check",
      "test": "node --test \"scripts/*.test.mjs\"",
      "check:site": "node scripts/check-site.mjs",
-     "check:a11y": "node scripts/check-a11y.mjs",
+     "check:browser": "node scripts/check-browser.mjs",
      "lighthouse": "lhci autorun",
      "verify": "pnpm format:check && pnpm lint && pnpm check && pnpm test && pnpm build && pnpm check:site",
      "prepare": "lefthook install"

@@ -8,7 +8,7 @@ const port = 4329;
 const origin = `http://localhost:${port}`;
 const tags = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 const colorSchemes = ['light', 'dark'];
-const startupAttempts = 50;
+const startupAttempts = 150;
 
 function listPages() {
   return readdirSync('dist', { recursive: true, withFileTypes: true })
@@ -34,13 +34,18 @@ async function waitForServer() {
 async function scan(browser, url, colorScheme) {
   const context = await browser.newContext({ colorScheme });
   const page = await context.newPage();
+  const blocked = [];
+  page.on('console', (message) => {
+    if (message.text().includes('Content Security Policy')) blocked.push(message.text());
+  });
   await page.goto(`${origin}${url}`);
   const { violations } = await new AxeBuilder({ page }).withTags(tags).analyze();
   await context.close();
-  return violations;
+  return { violations, blocked };
 }
 
-const server = spawn('pnpm', ['exec', 'astro', 'preview', '--port', String(port)], {
+// Wrangler serves public/_headers as production does; astro preview ignores them.
+const server = spawn('pnpm', ['exec', 'wrangler', 'dev', '--local', '--port', String(port)], {
   stdio: 'ignore',
   detached: true,
 });
@@ -50,19 +55,24 @@ try {
   const browser = await chromium.launch({ channel: 'chrome' });
   const pages = listPages();
   const scans = pages.flatMap((url) =>
-    colorSchemes.map(async (colorScheme) => {
-      const violations = await scan(browser, url, colorScheme);
-      return violations.map((violation) => ({ url, colorScheme, violation }));
-    }),
+    colorSchemes.map(async (colorScheme) => ({
+      url,
+      colorScheme,
+      ...(await scan(browser, url, colorScheme)),
+    })),
   );
-  const failures = (await Promise.all(scans)).flat();
-  for (const { url, colorScheme, violation } of failures) {
-    console.log(`error WEB-A11Y-001 ${url} (${colorScheme}): ${violation.help}`);
-    for (const node of violation.nodes) console.log(`  ${node.target.join(' ')}`);
+  let failures = 0;
+  for (const { url, colorScheme, violations, blocked } of await Promise.all(scans)) {
+    failures += violations.length + blocked.length;
+    for (const violation of violations) {
+      console.log(`error WEB-A11Y-001 ${url} (${colorScheme}): ${violation.help}`);
+      for (const node of violation.nodes) console.log(`  ${node.target.join(' ')}`);
+    }
+    for (const message of blocked) console.log(`error WEB-SEC-003 ${url}: ${message}`);
   }
   await browser.close();
-  console.log(`check-a11y: ${pages.length} pages, ${failures.length} violations`);
-  process.exitCode = failures.length > 0 ? 1 : 0;
+  console.log(`check-browser: ${pages.length} pages, ${failures} violations`);
+  process.exitCode = failures > 0 ? 1 : 0;
 } finally {
   process.kill(-server.pid);
 }

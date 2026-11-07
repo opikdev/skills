@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'node-html-parser';
@@ -80,6 +81,30 @@ function findBrokenLinks(page, roots, paths, redirects, origin) {
   return findings;
 }
 
+function jsonLdScripts(page) {
+  return page.root.querySelectorAll('script[type="application/ld+json"]');
+}
+
+function isValidJson(text) {
+  try {
+    JSON.parse(text);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function findInvalidJsonLd(page) {
+  return jsonLdScripts(page)
+    .filter((script) => !isValidJson(script.rawText))
+    .map(() => ({
+      id: 'WEB-SEO-008',
+      severity: 'error',
+      where: page.url,
+      message: 'JSON-LD is not valid JSON',
+    }));
+}
+
 export function checkPages({ pages, sitemap, assets = [], redirects = [], origin }) {
   const parsed = pages.map((page) => ({ url: page.url, root: parse(page.html) }));
   const indexable = parsed.filter((page) => page.url !== notFoundPage);
@@ -115,6 +140,7 @@ export function checkPages({ pages, sitemap, assets = [], redirects = [], origin
       });
     }
     findings.push(...findBrokenLinks(page, roots, paths, redirectSources, origin));
+    findings.push(...findInvalidJsonLd(page));
   }
 
   findings.push(...findDuplicates(parsed, 'WEB-SEO-002', 'title', title));
@@ -131,7 +157,7 @@ export function checkPages({ pages, sitemap, assets = [], redirects = [], origin
         message: `canonical is ${canonical ?? 'missing'}, expected ${expected}`,
       });
     }
-    if (!page.root.querySelector('script[type="application/ld+json"]')) {
+    if (jsonLdScripts(page).length === 0) {
       findings.push({
         id: 'WEB-SEO-007',
         severity: 'warn',
@@ -175,6 +201,24 @@ export function checkHeaders(headers) {
       where: 'public/_headers',
       message: `missing ${name}`,
     }));
+}
+
+export function checkInlineScripts(pages, headers) {
+  if (!/script-src/i.test(headers)) return [];
+  return pages.flatMap((page) =>
+    parse(page.html)
+      .querySelectorAll('script')
+      .filter((script) => !script.hasAttribute('src'))
+      .filter((script) => script.getAttribute('type') !== 'application/ld+json')
+      .map((script) => createHash('sha256').update(script.rawText).digest('base64'))
+      .filter((hash) => !headers.includes(`'sha256-${hash}'`))
+      .map((hash) => ({
+        id: 'WEB-SEC-002',
+        severity: 'error',
+        where: page.url,
+        message: `CSP in public/_headers blocks an inline script; allow 'sha256-${hash}'`,
+      })),
+  );
 }
 
 export function checkWorkflow(file, text) {
@@ -222,10 +266,12 @@ function readDist(dist, origin) {
 
 if (import.meta.main) {
   const site = readDist('dist', 'https://opik.dev');
+  const headers = readFileSync('public/_headers', 'utf8');
   const workflowDir = '.github/workflows';
   const findings = [
     ...checkPages(site),
-    ...checkHeaders(readFileSync('public/_headers', 'utf8')),
+    ...checkHeaders(headers),
+    ...checkInlineScripts(site.pages, headers),
     ...readdirSync(workflowDir).flatMap((file) =>
       checkWorkflow(join(workflowDir, file), readFileSync(join(workflowDir, file), 'utf8')),
     ),

@@ -1,6 +1,12 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { checkHeaders, checkPages, checkWorkflow, urlForFile } from './check-site.mjs';
+import {
+  checkHeaders,
+  checkInlineScripts,
+  checkPages,
+  checkWorkflow,
+  urlForFile,
+} from './check-site.mjs';
 
 const origin = 'https://example.dev';
 
@@ -109,6 +115,31 @@ test('flags a broken anchor and accepts a real one', () => {
 
 test('missing JSON-LD is a warning, not an error', () => {
   assert.deepEqual(ids(check([page('/', { jsonLd: false })])), ['warn:WEB-SEO-007']);
+});
+
+test('flags invalid JSON-LD', () => {
+  const pages = [page('/')];
+  pages[0].html = pages[0].html.replace('>{}<', '>{"@type":,}<');
+  assert.deepEqual(ids(check(pages)), ['error:WEB-SEO-008']);
+});
+
+test('flags an inline script the CSP does not allow', () => {
+  const pages = [{ url: '/', html: '<script>run()</script>' }];
+  const headers = "Content-Security-Policy: script-src 'self'";
+  assert.deepEqual(ids(checkInlineScripts(pages, headers)), ['error:WEB-SEC-002']);
+});
+
+test('accepts allowed inline scripts, data blocks, external scripts, and no CSP', () => {
+  const allowed =
+    "Content-Security-Policy: script-src 'sha256-AvyuiL0SD1mVY3NNxR+V2uo+lhk6RMFrytWmRt6CrJQ='";
+  const pages = [
+    {
+      url: '/',
+      html: '<script>run()</script><script type="application/ld+json">{}</script><script src="/a.js"></script>',
+    },
+  ];
+  assert.deepEqual(checkInlineScripts(pages, allowed), []);
+  assert.deepEqual(checkInlineScripts(pages, 'X-Frame-Options: DENY'), []);
 });
 
 test('warns on each missing security header', () => {
