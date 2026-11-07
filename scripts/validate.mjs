@@ -2,39 +2,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'yaml';
 
-const severities = new Set(['error', 'warn']);
-const requiredFields = ['id', 'severity', 'rule', 'why', 'applies'];
 const maxDescription = 1024;
-const ruleIdPattern = /(?<![A-Z-])(?:GIT|SEC|CODE|CI|WEB-[A-Z0-9]+)-\d{3}\b/g;
-
-export function validateRules(rules) {
-  const problems = [];
-  const seen = new Set();
-  for (const rule of rules) {
-    const label = rule.id ?? JSON.stringify(rule);
-    for (const field of requiredFields) {
-      if (!rule[field]) problems.push(`${label}: missing ${field}`);
-    }
-    if (seen.has(rule.id)) problems.push(`${label}: duplicate id`);
-    seen.add(rule.id);
-    if (!severities.has(rule.severity)) {
-      problems.push(`${label}: unknown severity "${rule.severity}"`);
-    }
-    if (rule.severity === 'error' && !rule.verify?.tool) {
-      problems.push(`${label}: an error rule needs a verify method`);
-    }
-  }
-  return problems;
-}
-
-export function validateRuleReferences(files, rules) {
-  const known = new Set(rules.map((rule) => rule.id));
-  return files.flatMap(({ path, text }) =>
-    [...new Set(text.match(ruleIdPattern) ?? [])]
-      .filter((id) => !known.has(id))
-      .map((id) => `${path}: ${id} is not in rules/`),
-  );
-}
 
 export function validateSkill(directory, text, fileExists) {
   const match = text.match(/^---\n([\s\S]*?)\n---\n/);
@@ -53,24 +21,13 @@ export function validateSkill(directory, text, fileExists) {
 }
 
 if (import.meta.main) {
-  const rules = readdirSync('rules').flatMap((file) =>
-    parse(readFileSync(join('rules', file), 'utf8')),
-  );
   const skills = readdirSync('skills');
-  const checks = readdirSync('checks', { recursive: true, withFileTypes: true })
-    .filter((entry) => entry.isFile() && !entry.name.endsWith('.test.mjs'))
-    .map((entry) => join(entry.parentPath, entry.name))
-    .map((path) => ({ path, text: readFileSync(path, 'utf8') }));
-  const problems = [
-    ...validateRules(rules),
-    ...validateRuleReferences(checks, rules),
-    ...skills.flatMap((directory) =>
-      validateSkill(directory, readFileSync(join('skills', directory, 'SKILL.md'), 'utf8'), (target) =>
-        existsSync(join('skills', directory, target)),
-      ),
+  const problems = skills.flatMap((directory) =>
+    validateSkill(directory, readFileSync(join('skills', directory, 'SKILL.md'), 'utf8'), (target) =>
+      existsSync(join('skills', directory, target)),
     ),
-  ];
+  );
   for (const problem of problems) console.error(problem);
-  console.log(`validate: ${rules.length} rules, ${skills.length} skills, ${problems.length} problems`);
+  console.log(`validate: ${skills.length} skills, ${problems.length} problems`);
   process.exitCode = problems.length > 0 ? 1 : 0;
 }

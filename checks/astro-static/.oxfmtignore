@@ -1,6 +1,0 @@
-dist/
-.astro/
-.wrangler/
-.lighthouseci/
-design/
-pnpm-lock.yaml

@@ -1,9 +1,0 @@
-pre-commit:
-  commands:
-    secrets:
-      run: gitleaks git --staged --no-banner
-
-commit-msg:
-  commands:
-    conventional:
-      run: node scripts/check-commit-msg.mjs {1}

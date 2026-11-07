@@ -1,16 +1,6 @@
 # Opik Skills
 
-An engineering kit that makes AI agents follow software standards. Checks enforce what a machine can verify, and skills guide the rest.
-
-## What's in the kit
-
-| Part | Job | Location |
-|---|---|---|
-| Skills | Tell the agent how | [`skills/`](skills/) |
-| Rules | Register each enforced rule with its ID, severity, reason, and verification method | [`rules/`](rules/) |
-| Checks | Prove the work is right, in agent hooks and CI | [`checks/`](checks/) |
-
-Skills:
+Standards skills for AI coding agents. Each skill gives an agent the judgment a linter can't.
 
 | Skill | Covers |
 |---|---|
@@ -21,20 +11,14 @@ Skills:
 | [opik-git-standards](skills/opik-git-standards/SKILL.md) | Commits, branches, PRs, and safe agent conduct |
 | [opik-review-standards](skills/opik-review-standards/SKILL.md) | Evidence-based reviews with an explicit verdict |
 
-## Install the skills
+## Install
 
 ```bash
-npx skills add opikdev/skills -g -a claude-code codex
+npx skills add opikdev/skills -g -a codex
 ```
 
 This repo is private, so the command needs GitHub access.
 
-## Adopt the checks
+## Develop
 
-Follow [Add the kit to a project](docs/add-the-kit-to-a-project.md). The available set is `checks/astro-static`, proven on opik.dev.
-
-## Develop the kit
-
-Run `pnpm install`, then `pnpm verify` to run the tests and validate every rule and skill.
-
-This repo is the source of truth. See [why the kit favors checks](docs/decisions/001-checks-before-prose.md).
+Run `pnpm install`, then `pnpm verify` to run the tests and validate every skill.
