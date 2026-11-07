@@ -85,9 +85,13 @@ Each skill ran the same task with and without the skill on one model, scored by 
 
 These are single runs, and the checks reward each skill's own conventions, so read them as a rough signal. The backend and git skills change behavior most. On a harder task, the coding skill kept the change smaller, and its test rule added a test in both reruns. The docs skill showed no measurable change.
 
+In one pass of 100 prompts on Claude Opus, the right skill loaded 77 of 81 times, with no false loads. All 20 near-miss prompts loaded nothing. Those sessions were short and fresh, so long sessions may differ.
+
 ## Develop
 
 Run `pnpm install`, then `pnpm verify` to run the tests and validate every skill.
+
+Run `pnpm eval:triggers` to check which skills load for the 100 prompts in [`evals/triggers.json`](evals/triggers.json). It starts one agent session per prompt, so try `pnpm eval:triggers --limit 5` first.
 
 ## License
 
